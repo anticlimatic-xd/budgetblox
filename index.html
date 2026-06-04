@@ -1,80 +1,182 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>budgetblox</title>
-    <style>
-      @font-face {
-        font-family: 'Comic Sans MS';
-        src: url("assets/COMIC.TTF") format('truetype');
+
+<head>
+  <title>budgetblox</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    @font-face {
+      font-family: 'Comic Sans Ms';
+      src: url('c:\WINDOWS\Fonts\COMIC.TTF') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    * {
+      font-family: 'Comic Sans Ms', sans-serif;
+    }
+  </style>
+
+  <style>
+    /* 1. Base hidden state */
+    .fullscreen-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000000;
+      z-index: 9999;
+    }
+
+    /* 2. FORCE visibility when active class is applied */
+    .fullscreen-overlay.active {
+      display: block !important;
+    }
+
+    /* 3. CRITICAL: Force the browser fullscreen API to display the container */
+    #appContainer:fullscreen {
+      display: block !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: #000000 !important;
+    }
+
+    /* 4. CRITICAL: Force the dynamic iframe to occupy 100% of the screen */
+    #appContainer iframe {
+      width: 100% !important;
+      height: 100% !important;
+      min-width: 100vw !important;
+      min-height: 100vh !important;
+      border: none !important;
+      display: block !important;
+    }
+
+    /* Clear out browser backdrop artifacts */
+    #appContainer::backdrop {
+      background-color: #000000 !important;
+    }
+  </style>
+
+</head>
+
+<body>
+  <h1>Budgetblox</h1>
+  <p>poor man's roblox 💀</p>
+  <h3>controls</h3>
+  <ul>
+    <li>ctrl+f to find a game</li>
+    <br>
+    <li>esc to return to budgetblox</li>
+  </ul>
+  <br>
+
+  <div>
+    <h3>growden</h3>
+    <img height=80 width=80 src="budgetblox-growden.jpg">
+    <p>welcome to growden!🌱🥕🍎🌻<br>grow your own garden with friends<br>
+      buy seeds, plant them, and become rich, buy and raise pets, trade valuables <br>and flex ur fruits to friends!</p>
+    <button class="game-btn" data-url="https://www.growden.io">play</button>
+  </div>
+
+  <div>
+    <h3>veck</h3>
+    <img height=80 width=80 src="budgetblox-veck.jpg">
+    <p>eliminate all ur opps in this fast paced pvp shooter game <br>
+      customize ur loadout, climb the ranks and become the most overpowered person!<br>
+      style ur weapons with many charms and skins<br>
+      explore our numerous amunt of weapons<br>
+      fight in intense 1v1 to 5v5 battles</p>
+    <button class="game-btn" data-url="https://www.veck.io">play</button>
+  </div>
+
+  <div>
+    <h3>ultimate troll tower</h3>
+    <img height=80 width=80 src="budgetblox-troll-slap-tower.webp">
+    <p>WELCOME TO SLAP TOWER get to the top before other ppl troll u, or will u troll them?????
+      <br>🧭 many paths to chose!
+      <br>👋 many trolls for you to use!S
+      <br>🔝 reach the top!
+    </p>
+    <button class="game-btn"
+      data-url="https://www.app-448845.games.s3.yandex.net/448845/pbv3dbskvj00klfjbrkaz32vm8mhe24f_brotli/index.html?
+        header=no&sdk=%2Fsdk%2F_%2Fv2.c9dd7fdd48522a0f7d44.js#origin=https%3A%2F%2Fyandex.com&app-id=448845">play</button>
+  </div>
+
+  <div>
+    <h3>brainrot wave escape</h3>
+    <img height="80" width="80" src="budgetblox-escape-waves.webp">
+    <p>free the brainrots from the endless waves
+      <br>🌊 every brainrot makes money
+      <br>🌊 use the money to increase carry and speed
+      <br>🌊 reach new zones to get better brainrots
+    </p>
+    <button class="game-btn" data-url="https://www.escapewaves.io">play</button>
+  </div>
+
+  <div>
+    <h3>draw obby</h3>
+    <img height="80" width="80" src="budgetblox-draw-obby.jpg">
+    <p>use your pencil and start drawing. go past the obstacles to go to end.
+      <br>play together with your friends and help eachother
+      <br>or play solo
+      <br>PLAY NOW FOR FREE SKIN!! 👕
+    </p>
+    <button class="game-btn" data-url="https://www.play-games.com/iframe/40168.html">play</button>
+  </div>
+
+  <div>
+    <h3>Robbie: Become popular!</h3>
+    <img height="80" width="80" src="budgetblox-become-popular.jpg">
+    <p>wip!!!</p>
+    <button class="game-btn"
+      data-url="https://www.miniplay.com/embed/obby-with-friends-hide-and-seek-online">play</button>
+  </div>
+
+
+  <div id="appContainer" class="fullscreen-overlay"></div>
+
+  <script>
+    const container = document.getElementById('appContainer');
+
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('game-btn')) {
+        let targetUrl = e.target.getAttribute('data-url');
+
+        // DIAGNOSTIC LOG: Press F12 to check what path the browser is actually calculating
+        console.log("Original data-url clicked:", targetUrl);
+
+        console.log("Final processed URL being loaded into Iframe:", targetUrl);
+
+        // Inject iframe cleanly
+        container.innerHTML = `
+                    <iframe 
+                        id="activeApp" 
+                        src="${targetUrl}" 
+                        allow="autoplay *; fullscreen *; gamepad *; accelerometer *; gyroscope *; encrypted-media *;">
+                    </iframe>`;
+
+        container.classList.add('active');
+
+        container.requestFullscreen()
+          .then(() => {
+            const iframe = document.getElementById('activeApp');
+            if (iframe) iframe.focus();
+          })
+          .catch(err => console.error("Fullscreen entry blocked:", err));
       }
+    });
 
-      * {
-        font-family: 'Comic Sans MS', cursive, sans-serif;
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        container.classList.remove('active');
+        container.innerHTML = '';
       }
-    </style>
-  </head>
-  <body>
-      <h1>Budgetblox</h1>
-      <p>poor man's roblox 💀</p>
-      <h3>controls</h3>
-      <ul>
-        <li>ctrl+f to find a game</li>
-        <br>
-        <li>alt(cmd)+left arrow to return to budgetblox (might not work)</li>
-      </ul>
-      <br>
+    });
+  </script>
+</body>
 
-      <div>
-        <h3>Growden</h3>
-        <img height=80 width=80 src="assets/budgetblox-growden.jpg">
-        <p>welcome to growden!<br>grow your own garden with friends<br>
-         buy seeds, plant them, and become rich, buy and raise pets, trade valuables <br>and flex ur fruits to friends!</p>
-        <a href="https://www.growden.io"><button type="button">play</button></a>
-      </div>
-
-      <div>
-        <h3>Veck</h3>
-        <img height=80 width=80 src="assets/budgetblox-veck.jpg">
-        <p>eliminate all ur opps in this fast paced pvp shooter game <br>
-        customize ur loadout, climb the ranks and become the most overpowered person!<br>
-        style ur weapons with many charms and skins<br>
-        explore our numerous amunt of weapons<br>
-        fight in intense 1v1 to 5v5 battles</p>
-        <a href="https://www.veck.io"><button type="button">play</button></a>
-      </div>
-
-      <div>
-        <h3>Obby: Troll Slap Tower</h3>
-        <img height=80 width=80 src="assets/budgetblox-troll-slap-tower.webp">
-        <p>climb the tower and get slaps to troll other ppl, many obstacles to traverse and very cool when at end</p>
-        <a href="https://app-448845.games.s3.yandex.net/448845/pbv3dbskvj00klfjbrkaz32vm8mhe24f_brotli/index.html?
-        header=no&sdk=%2Fsdk%2F_%2Fv2.c9dd7fdd48522a0f7d44.js#origin=https%3A%2F%2Fyandex.com&app-id=448845">
-          <button type="button">play</button></a>
-      </div>
-
-      <div>
-        <h3>Escape waves</h3>
-        <img height="80" width="80" src="assets/budgetblox-escape-waves.webp">
-        <p>free the brainrots from the endless waves
-          <br>every brainrot makes money
-          <br>use the money to increase carry and speed
-          <br>reach new zones to get better brainrots
-        </p>
-        <a href="https://www.escapewaves.io"><button type="button">play</button></a>
-      </div>
-
-      <div>
-        <h3>Obby online with Friends: Draw and Jump!</h3>
-        <img height="80" width="80" src="assets/budgetblox-draw-obby.jpg">
-        <p>draw to go through the many logical obstacles, be careful tho, u have limited pencils</p>
-        <a href="https://www.play-games.com/iframe/40168.html"><button type="button">play</button></a>
-      </div>
-
-      <div>
-        <h3>Robbie: Become popular!</h3>
-        <img height="80" width="80" src="assets/budgetblox-become-popular.jpg">
-        <p>work your way thru the ranks of popularity, from noob to pro! every purchase, equipment and content will get u closer to ur goal !!!</p>
-        <a href="https://www.play-games.com/iframe/38675.html"><button type="button">play</button></a>
-      </div>
-  </body>
 </html>
